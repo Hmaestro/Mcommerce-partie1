@@ -116,5 +116,19 @@ public class ProductController {
 
     }
 
+    @GetMapping(value = "/Produits/sort")
+    public MappingJacksonValue trierProduitsParOrdreAlphabetique() {
+        Iterable<Product> produits = productDao.findAllByOrderByNomAsc();
+
+        SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("prixAchat");
+
+        FilterProvider listDeNosFiltres = new SimpleFilterProvider().addFilter("monFiltreDynamique", monFiltre);
+
+        MappingJacksonValue produitsFiltres = new MappingJacksonValue(produits);
+
+        produitsFiltres.setFilters(listDeNosFiltres);
+
+        return produitsFiltres;
+    }
 
 }
